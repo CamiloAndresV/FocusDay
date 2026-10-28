@@ -8,8 +8,8 @@
 
 ## 🔗 Enlaces del Proyecto
 
-- 🎨 **Diseño en Figma (Wireframe/UI):** [Enlace a Figma](URL_DE_TU_FIGMA)
-- 📋 **Tablero de Trello (Gestión del Proyecto):** [Enlace a Trello](URL_DE_TU_TRELLO)
+- 🎨 **Diseño en Figma (Wireframe/UI):** [Enlace a Figma](https://www.figma.com/design/SMhGEdHogP0LFuVkP7YYxf/Planificador-de-tareas--FocusDay-?node-id=0-1&t=Op0ksq8uERZTp0T3-1)
+- 📋 **Tablero de Trello (Gestión del Proyecto):** [Enlace a Trello](https://trello.com/invite/b/6ae251709709599fa65984e4/ATTIf5f027039bae4779582040d0e28f6829C3DE69C8/planificador-de-tareas)
 
 ---
 
