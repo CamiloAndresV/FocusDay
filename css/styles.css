@@ -1,11 +1,49 @@
+/* Reseteo Global */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 img {
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
+/* Tarjetas de Tarea */
+.task-card {
+  min-height: 210px; /* Asegura la apariencia rectangular alargada en escritorio */
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Truncado de Título a 1 línea */
+.text-truncate-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Truncado de Descripción a 3 líneas */
+.text-truncate-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 3.6rem;
+}
+
+/* Badges Interactivos */
+.badge-estado-click {
+  cursor: pointer;
+  user-select: none;
 }
