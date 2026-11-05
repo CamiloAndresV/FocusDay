@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./img/focus.jpg" type="image/x-icon">
   <title>FocusDay</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
@@ -80,7 +80,7 @@
         <!-- Contenedor grid de tareas -->
         <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3" id="contenedorTareas">
           
-          <!-- Card de Ejemplo -->
+          <!-- Card 1 -->
           <div class="col">
             <article class="card h-100 p-3 border-2 border-dark task-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -97,16 +97,13 @@
 
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-danger text-white">Alta</span>
-                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
-                  Editar
-                </button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
-                  Eliminar
-                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
 
+          <!-- Card 2 -->
           <div class="col">
             <article class="card h-100 p-3 border-2 border-dark task-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -118,21 +115,18 @@
               <!-- Zona que abre el modal al hacer clic -->
               <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
                 <h2 class="h6 fw-bold text-truncate-title" title="Diseñar interfaz de login">Diseñar interfaz de login</h2>
-                <p class="card-text small text-muted text-truncate-description">Diseñar la interfaz de usuario para la pantalla de inicio de sesión. para poder iniciar sesión en la aplicación. en la aplicación.</p>
+                <p class="card-text small text-muted text-truncate-description">Diseñar la interfaz de usuario para la pantalla de inicio de sesión.</p>
               </div>
 
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-warning text-white">Media</span>
-                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
-                  Editar
-                </button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
-                  Eliminar
-                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
 
+          <!-- Card 3 -->
           <div class="col">
             <article class="card h-100 p-3 border-2 border-dark task-card bg-light">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -143,22 +137,19 @@
 
               <!-- Zona que abre el modal al hacer clic -->
               <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
-                <h2 class="h6 fw-bold text-truncate-title" title="optimizar el rendimiento de la aplicación">optimizar el rendimiento de la aplicación</h2>
-                <p class="card-text small text-muted text-truncate-description">optimizar el rendimiento de la aplicación con nuevas técnicas y herramientas. desde la versión 1.0.0.</p>
+                <h2 class="h6 fw-bold text-truncate-title" title="Optimizar el rendimiento de la aplicación">Optimizar el rendimiento de la aplicación</h2>
+                <p class="card-text small text-muted text-truncate-description">Optimizar el rendimiento de la aplicación con nuevas técnicas y herramientas.</p>
               </div>
 
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-danger text-white">Alta</span>
-                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
-                  Editar
-                </button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
-                  Eliminar
-                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
 
+          <!-- Card 4 -->
           <div class="col">
             <article class="card h-100 p-3 border-2 border-dark task-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -169,22 +160,19 @@
 
               <!-- Zona que abre el modal al hacer clic -->
               <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
-                <h2 class="h6 fw-bold text-truncate-title" title="establecer el entorno de desarrollo">Establecer el entorno de desarrollo</h2>
-                <p class="card-text small text-muted text-truncate-description">establecer el entorno de desarrollo para poder trabajar en el proyecto.</p>
+                <h2 class="h6 fw-bold text-truncate-title" title="Establecer el entorno de desarrollo">Establecer el entorno de desarrollo</h2>
+                <p class="card-text small text-muted text-truncate-description">Establecer el entorno de desarrollo para poder trabajar en el proyecto.</p>
               </div>
 
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-success text-white">Baja</span>
-                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
-                  Editar
-                </button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
-                  Eliminar
-                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
 
+          <!-- Card 5 -->
           <div class="col">
             <article class="card h-100 p-3 border-2 border-dark task-card">
               <div class="d-flex justify-content-between align-items-center mb-2">
@@ -201,12 +189,8 @@
 
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-success text-white">Baja</span>
-                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
-                  Editar
-                </button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
-                  Eliminar
-                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -279,30 +263,36 @@
           <button type="button" class="btn btn-outline-danger" id="btnEliminarTareaModal">Eliminar</button>
           <div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <!-- <button type="button" class="btn btn-dark" id="btnEditarTareaModal">Editar Tarea</button> -->
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL FORMULARIO (NUEVA TAREA / EDITAR TAREA) -->
+  <!-- MODAL FORMULARIO -->
   <div class="modal fade" id="modalFormularioTarea" tabindex="-1" aria-labelledby="modalFormularioTareaLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+
+        <!-- Alerta de Error con margen visible al activarse -->
+        <div class="alert alert-danger d-none m-3 mb-0" id="alertError" role="alert">
+          Por favor completa todos los campos requeridos antes de guardar. Asegúrate de que la fecha límite sea válida y que hayas seleccionado un estado y una prioridad.
+        </div>
+
         <div class="modal-header">
           <h5 class="modal-title fw-bold" id="modalFormularioTareaLabel">Nueva Tarea</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCerrarX"></button>
         </div>
         <div class="modal-body">
-          <form id="formNuevaTarea">
+          <!-- novalidate para permitir que JS controle la validación -->
+          <form id="formNuevaTarea" novalidate>
             <div class="mb-3">
               <label for="tituloTarea" class="form-label fw-bold">Título</label>
-              <input type="text" class="form-control" id="tituloTarea" required>
+              <input type="text" class="form-control" id="tituloTarea">
             </div>
             <div class="mb-3">
               <label for="estadoTarea" class="form-label fw-bold">Estado</label>
-              <select class="form-select" id="estadoTarea" required>
+              <select class="form-select" id="estadoTarea">
                 <option value="" selected disabled>Seleccione un estado</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="en-proceso">En Proceso</option>
@@ -317,11 +307,11 @@
             <div class="row g-2 mb-3">
               <div class="col-6">
                 <label for="fechafin" class="form-label fw-bold">Fecha límite</label>
-                <input type="date" class="form-control" id="fechafin" required>
+                <input type="date" class="form-control" id="fechafin">
               </div>
               <div class="col-6">
                 <label for="prioridad" class="form-label fw-bold">Prioridad</label>
-                <select class="form-select" id="prioridad" required>
+                <select class="form-select" id="prioridad">
                   <option value="" selected disabled>Seleccione una prioridad</option>
                   <option value="alta">Alta</option>
                   <option value="media">Media</option>
@@ -331,15 +321,30 @@
             </div>
           </form>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="btnCancelar">Cancelar</button>
           <button type="submit" form="formNuevaTarea" class="btn btn-dark">Guardar Tarea</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal de confirmación de éxito -->
+  <div class="modal fade" id="modalExito" tabindex="-1" aria-labelledby="modalExitoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content text-center p-3">
+        <div class="modal-body">
+          <h5 class="fw-bold mb-2" id="modalExitoLabel">¡Tarea Guardada!</h5>
+          <p class="text-muted small mb-3">Los datos se han registrado correctamente.</p>
+          <button type="button" class="btn btn-success w-100 fw-bold" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>
