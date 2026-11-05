@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./img/focus.jpg" type="image/x-icon">
   <title>FocusDay</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/styles.css">
@@ -15,120 +16,330 @@
     <div class="container-fluid px-4 border-bottom border-2 border-dark pb-2 mb-1">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <div class="col-3 col-md-3 d-flex justify-content-start align-items-center">
-          <!-- Placeholder de Logo -->
-          <div class="border border-1 rounded d-flex text-muted fw-bold" style="width: 60px; height: 60px;">
-            <a class="navbar-brand" href="#inicio"><img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQurhqD9rE2sSAOWFk9E4d_sVkJugt7qc1Lbfrgo3KVNw&s=10"
-                alt="Logo" class="img-fluid"></a>
+          <!-- Logo -->
+          <div class="border border-1 rounded d-flex text-muted fw-bold overflow-hidden" style="width: 60px; height: 60px;">
+            <a class="navbar-brand" href="#inicio">
+              <img src="./img/focus.jpg" alt="Logo" class="img-fluid w-100 h-100 object-fit-cover">
+            </a>
           </div>
         </div>
 
         <!-- Título y Frase Motivacional -->
         <div class="col-6 col-md-6 d-flex flex-column py-2 align-items-center">
           <h1 class="h3 fw-bold m-0">Focus Day</h1>
-          <p class="text-muted small m-0 text-center">"Los grandes proyectos no se construyen en un solo día, sino
-            mediante pequeños avances constantes."</p>
+          <p class="text-muted small m-0 text-center">"Los grandes proyectos no se construyen en un solo día, sino mediante pequeños avances constantes."</p>
         </div>
 
         <!-- Toggle Modo Oscuro / Claro -->
         <div class="col-3 col-md-3 d-flex justify-content-end align-items-center">
           <button class="btn btn-outline-secondary btn-sm border-0" id="themeToggle" title="Cambiar Tema">🔘</button>
         </div>
-
       </div>
     </div>
   </header>
 
-
   <!-- CONTENIDO PRINCIPAL -->
-    <div class="container-fluid flex-grow-1 d-flex flex-column">
-      <div class="row flex-grow-1">
+  <div class="container-fluid flex-grow-1 d-flex flex-column">
+    <div class="row flex-grow-1">
 
-        <!-- Area principal de tareas -->
-        <main class="col-12 col-lg-9 py-3">
+      <!-- Área principal de tareas -->
+      <main class="col-12 col-lg-9 py-3">
+        
+        <!-- Botón y Reloj Digital -->
+        <section class="d-flex justify-content-between align-items-center mb-4">
+          <button type="button" class="btn btn-dark fw-bold" data-bs-toggle="modal" data-bs-target="#modalFormularioTarea" id="btnAbrirNuevaTarea">
+            Nueva Tarea
+          </button>
+          <time class="digital-clock h2 fw-bold m-0" id="clock">12:30 PM</time>
+        </section>
+        
+        <!-- Barra de búsqueda y filtros -->
+        <section class="row g-2 align-items-center mb-4">
+          <div class="col-12 col-md-4">
+            <form role="search" onsubmit="event.preventDefault();">
+              <input type="search" class="form-control" id="inputBusqueda" placeholder="Buscar..." aria-label="Buscar tareas">
+            </form>
+          </div>
+          <div class="col-12 col-md-8 d-flex justify-content-md-end gap-2 align-items-center">
+            <button class="btn btn-outline-dark btn-sm" id="btnTodasTareas">Todas</button>
+            <select class="form-select form-select-sm w-auto" id="filterPriority" aria-label="Filtrar por prioridad">
+              <option value="" selected disabled>Filtro prioridad</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+            <select class="form-select form-select-sm w-auto" id="filterStatus" aria-label="Filtrar por estado">
+              <option value="" selected disabled>Filtro estado</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="en-proceso">En Proceso</option>
+              <option value="completada">Completada</option>
+            </select>
+          </div>
+        </section>
+        
+        <!-- Contenedor grid de tareas -->
+        <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3" id="contenedorTareas">
           
-          <!-- boton y reloj digital interactivo -->
-          <section class="d-flex justify-content-around align-items-center mb-4">
-            <button class="btn btn-secondary fw-bold">Nueva Tarea</button>
-              <time class="digital-clock h2 fw-bold m-0" id="clock">12:30 PM</time>
-          </section>
-          
-          <!-- barra de busqueda, filtros -->
-          <section class="row g-2 align-items-center mb-4">
-            <div class="col-12 col-md-4">
-              <form role="search">
-                <input type="search" class="form-control" placeholder="Buscar..." aria-label="Buscar tareas">
-              </form>
+          <!-- Card de Ejemplo -->
+          <div class="col">
+            <article class="card h-100 p-3 border-2 border-dark task-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Span editable para alternar estados -->
+                <span class="badge bg-danger text-white border badge-estado-click" title="Clic para cambiar estado">Pendiente</span>
+                <span class="small text-muted">10/11/2026</span>
+              </div>
+
+              <!-- Zona que abre el modal al hacer clic -->
+              <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
+                <h2 class="h6 fw-bold text-truncate-title" title="Terminar proyecto de planificador de tareas">Terminar proyecto de planificador de tareas</h2>
+                <p class="card-text small text-muted text-truncate-description">Determinar la creación del componente de la modal del formulario para que se puedan agregar nuevas tareas sin saturar la vista.</p>
+              </div>
+
+              <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                <span class="badge bg-danger text-white">Alta</span>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
+                  Editar
+                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card h-100 p-3 border-2 border-dark task-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Span editable para alternar estados -->
+                <span class="badge bg-primary text-white border badge-estado-click" title="Clic para cambiar estado">En proceso</span>
+                <span class="small text-muted">10/11/2026</span>
+              </div>
+
+              <!-- Zona que abre el modal al hacer clic -->
+              <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
+                <h2 class="h6 fw-bold text-truncate-title" title="Diseñar interfaz de login">Diseñar interfaz de login</h2>
+                <p class="card-text small text-muted text-truncate-description">Diseñar la interfaz de usuario para la pantalla de inicio de sesión. para poder iniciar sesión en la aplicación. en la aplicación.</p>
+              </div>
+
+              <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                <span class="badge bg-warning text-white">Media</span>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
+                  Editar
+                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card h-100 p-3 border-2 border-dark task-card bg-light">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Span editable para alternar estados -->
+                <span class="badge bg-success text-white border badge-estado-click" title="Clic para cambiar estado">Completada</span>
+                <span class="small text-muted">10/11/2026</span>
+              </div>
+
+              <!-- Zona que abre el modal al hacer clic -->
+              <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
+                <h2 class="h6 fw-bold text-truncate-title" title="optimizar el rendimiento de la aplicación">optimizar el rendimiento de la aplicación</h2>
+                <p class="card-text small text-muted text-truncate-description">optimizar el rendimiento de la aplicación con nuevas técnicas y herramientas. desde la versión 1.0.0.</p>
+              </div>
+
+              <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                <span class="badge bg-danger text-white">Alta</span>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
+                  Editar
+                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card h-100 p-3 border-2 border-dark task-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Span editable para alternar estados -->
+                <span class="badge bg-warning text-white border badge-estado-click" title="Clic para cambiar estado">Pendiente</span>
+                <span class="small text-muted">10/11/2026</span>
+              </div>
+
+              <!-- Zona que abre el modal al hacer clic -->
+              <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
+                <h2 class="h6 fw-bold text-truncate-title" title="establecer el entorno de desarrollo">Establecer el entorno de desarrollo</h2>
+                <p class="card-text small text-muted text-truncate-description">establecer el entorno de desarrollo para poder trabajar en el proyecto.</p>
+              </div>
+
+              <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                <span class="badge bg-success text-white">Baja</span>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
+                  Editar
+                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="col">
+            <article class="card h-100 p-3 border-2 border-dark task-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Span editable para alternar estados -->
+                <span class="badge bg-primary text-white border badge-estado-click" title="Clic para cambiar estado">En proceso</span>
+                <span class="small text-muted">10/11/2026</span>
+              </div>
+
+              <!-- Zona que abre el modal al hacer clic -->
+              <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
+                <h2 class="h6 fw-bold text-truncate-title" title="Tarea mas corta">Tarea mas corta</h2>
+                <p class="card-text small text-muted text-truncate-description">Desarrollar la funcionalidad principal de la aplicación</p>
+              </div>
+
+              <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                <span class="badge bg-success text-white">Baja</span>
+                <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">
+                  Editar
+                </button>
+                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          </div>
+
+        </section>
+      </main>
+
+      <!-- BARRA LATERAL (ASIDE) -->
+      <aside class="col-12 col-lg-3 border-start border-2 border-dark text-center py-3">
+
+        <!-- Widget Reproductor -->
+        <section class="widget-reproductor mb-3 border-bottom border-1 border-dark pb-3">
+          <h2 class="h6 fw-bold">Reproductor</h2>
+        </section>
+        
+        <!-- Widget Calendario -->
+        <section class="widget-calendario mb-3 border-bottom border-1 border-dark pb-3">
+          <h2 class="h6 fw-bold">Calendario</h2>
+        </section>
+
+        <!-- Widget Progreso -->
+        <section class="widget-progreso mb-3 border-bottom border-1 border-dark pb-3">
+          <h2 class="h6 fw-bold">Progreso</h2>
+        </section>
+
+        <!-- Widget Notas -->
+        <section class="widget-notas mb-3 border-bottom border-1 border-dark pb-3">
+          <h2 class="h6 fw-bold">Notas rápidas</h2>
+          <textarea class="form-control" rows="2" placeholder="Escribe algo..."></textarea>
+        </section>
+
+        <!-- Widget Logo -->
+        <section class="widget-brand mb-3 d-flex justify-content-center align-items-center">
+          <div class="border border-1 rounded d-flex text-muted fw-bold overflow-hidden" style="width: 60px; height: 60px;">
+            <a class="navbar-brand" href="#inicio">
+              <img src="./img/focusb.png" alt="Logo" class="img-fluid w-100 h-100 object-fit-cover">
+            </a>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="py-3 text-center border-top border-1 border-dark bg-light">
+    <p class="m-0 small">© 2026 FocusDay. Desarrollado por Camilo Ospina. GitHub. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- MODAL DETALLE DE TAREA (VISUALIZACIÓN DE COMPLETA INFORMACIÓN) -->
+  <div class="modal fade" id="modalDetalleTarea" tabindex="-1" aria-labelledby="modalDetalleTareaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-danger text-white border" id="detalleEstado">Pendiente</span>
+            <span class="badge bg-danger text-white" id="detallePrioridad">Alta</span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h3 class="h4 fw-bold mb-3" id="detalleTitulo">Terminar proyecto de planificador de tareas</h3>
+          <p class="text-muted" id="detalleDescripcion">Determinar la creación del componente de la modal del formulario para que se puedan agregar nuevas tareas.</p>
+          <hr>
+          <div class="d-flex justify-content-between text-muted small">
+            <span><strong>Fecha límite:</strong> <span id="detalleFecha">10/11/2026</span></span>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-outline-danger" id="btnEliminarTareaModal">Eliminar</button>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <!-- <button type="button" class="btn btn-dark" id="btnEditarTareaModal">Editar Tarea</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FORMULARIO (NUEVA TAREA / EDITAR TAREA) -->
+  <div class="modal fade" id="modalFormularioTarea" tabindex="-1" aria-labelledby="modalFormularioTareaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="modalFormularioTareaLabel">Nueva Tarea</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formNuevaTarea">
+            <div class="mb-3">
+              <label for="tituloTarea" class="form-label fw-bold">Título</label>
+              <input type="text" class="form-control" id="tituloTarea" required>
             </div>
-            <div class="col-12 col-md-8 d-flex justify-content-md-end gap-2 align-items-center">
-              <button class="btn btn-outline-dark btn-sm">Todas</button>
-              <select class="form-select form-select-sm w-auto" id="filterPriority" aria-label="Filtrar por prioridad">
-                <option value="" selected disabled>Filtro prioridad</option>
-                <option value="alta">Alta</option>
-                <option value="media">Media</option>
-                <option value="baja">Baja</option>
-              </select>
-              <select class="form-select form-select-sm w-auto" id="filterStatus" aria-label="Filtrar por estado">
-                <option value="" selected disabled>Filtro estado</option>
+            <div class="mb-3">
+              <label for="estadoTarea" class="form-label fw-bold">Estado</label>
+              <select class="form-select" id="estadoTarea" required>
+                <option value="" selected disabled>Seleccione un estado</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="en-proceso">En Proceso</option>
                 <option value="completada">Completada</option>
               </select>
             </div>
-          </section>
-          <!-- contenedor grid de las tareas -->
-          <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3" id="contenedorTareas">
-            <!-- aqui se mostrarán las tareas dinámicamente -->
-
-          </section>
-        </main>
-
-
-
-        <!-- BARRA LATERAL de información -->
-        <aside class="col-12 col-lg-3 border-start border-2 border-dark text-center py-3">
-
-          <!-- Widget de Reproductor -->
-          <section class="widget-reproductor mb-3 border-bottom border-1 border-dark pb-3">
-            <h2 class="h6 fw-bold">Reproductor</h2>
-          </section>
-          
-          <!-- widget de calendario -->
-          <section class="widget-calendario mb-3 border-bottom border-1 border-dark pb-3">
-            <h2 class="h6 fw-bold">Calendario</h2>
-          </section>
-
-          <!-- widget de progreso -->
-          <section class="widget-progreso mb-3 border-bottom border-1 border-dark pb-3">
-            <h2 class="h6 fw-bold">Progreso</h2>
-          </section>
-
-          <!-- widget de notas -->
-          <section class="widget-notas mb-3 border-bottom border-1 border-dark pb-3">
-            <h2 class="h6 fw-bold">Notas rapidas</h2>
-            <textarea class="form-control" rows="2" placeholder="Escribe algo..."></textarea>
-          </section>
-
-          <!-- widget de logo -->
-          <section class="widget-brand mb-3 d-flex justify-content-center align-items-center">
-            <div class="border border-1 rounded d-flex text-muted fw-bold" style="width: 60px; height: 60px;">
-              <a class="navbar-brand" href="#inicio"><img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQurhqD9rE2sSAOWFk9E4d_sVkJugt7qc1Lbfrgo3KVNw&s=10"
-                  alt="Logo" class="img-fluid"></a>
+            
+            <div class="mb-3">
+              <label for="descripcion" class="form-label fw-bold">Descripción</label>
+              <textarea class="form-control" id="descripcion" rows="3"></textarea>
             </div>
-          </section>
-
-        </aside>
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label for="fechafin" class="form-label fw-bold">Fecha límite</label>
+                <input type="date" class="form-control" id="fechafin" required>
+              </div>
+              <div class="col-6">
+                <label for="prioridad" class="form-label fw-bold">Prioridad</label>
+                <select class="form-select" id="prioridad" required>
+                  <option value="" selected disabled>Seleccione una prioridad</option>
+                  <option value="alta">Alta</option>
+                  <option value="media">Media</option>
+                  <option value="baja">Baja</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" form="formNuevaTarea" class="btn btn-dark">Guardar Tarea</button>
+        </div>
       </div>
     </div>
-    
+  </div>
 
-  <!-- PIE DE PAGINA -->
-  <footer class="py-3 text-center border-top border-1 border-dark bg-light">
-    <p class="m-0 small">&copy; 2024 FocusDay. Desarrollado por Camilo Ospina. Github. Todos los derechos reservados.</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
