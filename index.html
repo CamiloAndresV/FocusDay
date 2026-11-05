@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusDay</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <!-- ENCABEZADO -->
+  <header>
+    <div class="container-fluid px-4 border-bottom border-2 border-dark pb-2 mb-1">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="col-3 col-md-3 d-flex justify-content-start align-items-center">
+          <!-- Placeholder de Logo -->
+          <div class="border border-1 rounded d-flex text-muted fw-bold" style="width: 60px; height: 60px;">
+            <a class="navbar-brand" href="#inicio"><img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQurhqD9rE2sSAOWFk9E4d_sVkJugt7qc1Lbfrgo3KVNw&s=10"
+                alt="Logo" class="img-fluid"></a>
+          </div>
+        </div>
+
+        <!-- Título y Frase Motivacional -->
+        <div class="col-6 col-md-6 d-flex flex-column py-2 align-items-center">
+          <h1 class="h3 fw-bold m-0">Focus Day</h1>
+          <p class="text-muted small m-0 text-center">"Los grandes proyectos no se construyen en un solo día, sino
+            mediante pequeños avances constantes."</p>
+        </div>
+
+        <!-- Toggle Modo Oscuro / Claro -->
+        <div class="col-3 col-md-3 d-flex justify-content-end align-items-center">
+          <button class="btn btn-outline-secondary btn-sm border-0" id="themeToggle" title="Cambiar Tema">🔘</button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+
+  <!-- CONTENIDO PRINCIPAL -->
+    <div class="container-fluid flex-grow-1 d-flex flex-column">
+      <div class="row flex-grow-1">
+
+        <!-- Area principal de tareas -->
+        <main class="col-12 col-lg-9 py-3">
+          
+          <!-- boton y reloj digital interactivo -->
+          <section class="d-flex justify-content-around align-items-center mb-4">
+            <button class="btn btn-secondary fw-bold">Nueva Tarea</button>
+              <time class="digital-clock h2 fw-bold m-0" id="clock">12:30 PM</time>
+          </section>
+          
+          <!-- barra de busqueda, filtros -->
+          <section class="row g-2 align-items-center mb-4">
+            <div class="col-12 col-md-4">
+              <form role="search">
+                <input type="search" class="form-control" placeholder="Buscar..." aria-label="Buscar tareas">
+              </form>
+            </div>
+            <div class="col-12 col-md-8 d-flex justify-content-md-end gap-2 align-items-center">
+              <button class="btn btn-outline-dark btn-sm">Todas</button>
+              <select class="form-select form-select-sm w-auto" id="filterPriority" aria-label="Filtrar por prioridad">
+                <option value="" selected disabled>Filtro prioridad</option>
+                <option value="alta">Alta</option>
+                <option value="media">Media</option>
+                <option value="baja">Baja</option>
+              </select>
+              <select class="form-select form-select-sm w-auto" id="filterStatus" aria-label="Filtrar por estado">
+                <option value="" selected disabled>Filtro estado</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en-proceso">En Proceso</option>
+                <option value="completada">Completada</option>
+              </select>
+            </div>
+          </section>
+          <!-- contenedor grid de las tareas -->
+          <section class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3" id="contenedorTareas">
+            <!-- aqui se mostrarán las tareas dinámicamente -->
+
+          </section>
+        </main>
+
+
+
+        <!-- BARRA LATERAL de información -->
+        <aside class="col-12 col-lg-3 border-start border-2 border-dark text-center py-3">
+
+          <!-- Widget de Reproductor -->
+          <section class="widget-reproductor mb-3 border-bottom border-1 border-dark pb-3">
+            <h2 class="h6 fw-bold">Reproductor</h2>
+          </section>
+          
+          <!-- widget de calendario -->
+          <section class="widget-calendario mb-3 border-bottom border-1 border-dark pb-3">
+            <h2 class="h6 fw-bold">Calendario</h2>
+          </section>
+
+          <!-- widget de progreso -->
+          <section class="widget-progreso mb-3 border-bottom border-1 border-dark pb-3">
+            <h2 class="h6 fw-bold">Progreso</h2>
+          </section>
+
+          <!-- widget de notas -->
+          <section class="widget-notas mb-3 border-bottom border-1 border-dark pb-3">
+            <h2 class="h6 fw-bold">Notas rapidas</h2>
+            <textarea class="form-control" rows="2" placeholder="Escribe algo..."></textarea>
+          </section>
+
+          <!-- widget de logo -->
+          <section class="widget-brand mb-3 d-flex justify-content-center align-items-center">
+            <div class="border border-1 rounded d-flex text-muted fw-bold" style="width: 60px; height: 60px;">
+              <a class="navbar-brand" href="#inicio"><img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQurhqD9rE2sSAOWFk9E4d_sVkJugt7qc1Lbfrgo3KVNw&s=10"
+                  alt="Logo" class="img-fluid"></a>
+            </div>
+          </section>
+
+        </aside>
+      </div>
+    </div>
+    
+
+  <!-- PIE DE PAGINA -->
+  <footer class="py-3 text-center border-top border-1 border-dark bg-light">
+    <p class="m-0 small">&copy; 2024 FocusDay. Desarrollado por Camilo Ospina. Github. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>
