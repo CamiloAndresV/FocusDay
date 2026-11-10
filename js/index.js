@@ -7,7 +7,7 @@ function limpiarModal() {
   formNuevaTarea.reset();
 }
 
-// Función obligatoria exigida por la guía para validar las entradas
+// Función para validar las entradas
 function validFormFieldInput(data) {
   const { titulo, estado, descripcion, fecha, prioridad } = data;
   if (
@@ -36,12 +36,13 @@ function pintarTarea(data) {
     return; // Si no se encuentra el contenedor, salir de la función
   }
 
-    // Formatear texto a minúsculas para comparaciones seguras de clases CSS
+  // Formatear texto a minúsculas para comparaciones seguras de clases CSS
   const estadoLower = estado.toLowerCase();
   const prioridadLower = prioridad.toLowerCase();
+  const esCompletada = estadoLower === 'completada'
 
   // Mapeo de colores según estado y prioridad
-  const bgEstado = estadoLower === 'pendiente' ? 'danger' : estadoLower === 'en-proceso' || estadoLower === 'en proceso' ? 'primary' : 'success';
+  const bgEstado = esCompletada ? 'success' : (estadoLower === 'en-proceso' || estadoLower === 'en proceso') ? 'primary' : 'danger';
   const bgPrioridad = prioridadLower === 'alta' ? 'danger' : prioridadLower === 'media' ? 'warning' : 'success';
 
   // Capitalizar texto para mostrarlo bonito en la tarjeta
@@ -55,12 +56,16 @@ function pintarTarea(data) {
   tarea.innerHTML = `
   <article class="card h-100 p-3 border-2 border-dark task-card">
     <div class="d-flex justify-content-between align-items-center mb-2">
-      <span class="badge bg-${bgEstado} text-white border badge-estado-click" title="Clic para cambiar estado">${estadoTexto}</span>
-      <span class="small text-muted">${fecha}</span>
+      <span class="badge bg-${bgEstado} text-white border badge-estado" title="Clic para cambiar estado">${estadoTexto}</span>
+      <div class="form-check form-switch" onclick="event.stopPropagation();">
+        <input class="form-check-input switch-tarea-estado" type="checkbox" role="switch" ${esCompletada ? 'checked' : ''} title="Marcar como completada">
+      </div>
     </div>
+
     <div data-bs-toggle="modal" data-bs-target="#modalDetalleTarea">
       <h2 class="h6 fw-bold text-truncate-title" title="${titulo}">${titulo}</h2>
       <p class="card-text small text-muted text-truncate-description">${descripcion}</p>
+      <span class="small text-muted">${fecha}</span>
     </div>
     <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
       <span class="badge bg-${bgPrioridad} text-white">${prioridadTexto}</span>
@@ -69,9 +74,62 @@ function pintarTarea(data) {
     </div>
   </article>
   `
+
   contenedorTareas.appendChild(tarea);
 }
 
+// función toggle para alternar entre pediente / completada
+function actualizarEstadoTarea(colElemento, estaCompletada) {
+  const card = colElemento.querySelector('.card')
+  const badgeEstado = colElemento.querySelector('.badge-estado')
+  const titulo = colElemento.querySelector('h2')
+  const descripcion = colElemento.querySelector('p.card-text')
+
+  if (!card || !badgeEstado || !titulo) return;
+
+  if (estaCompletada) {
+    // Cambiar a completada
+    badgeEstado.textContent = 'Completada';
+    badgeEstado.className = 'badge bg-success text-white border badge-estado';
+    card.classList.add('bg-light', 'opacity-75'); // Fondo opaco[cite: 31]
+    titulo.classList.add('text-decoration-line-through', 'text-muted'); // Tachado visual[cite: 31]
+    if (descripcion) descripcion.classList.add('text-decoration-line-through', 'text-muted');
+  } else {
+    badgeEstado.textContent = 'Pendiente';
+    badgeEstado.className = 'badge bg-danger text-white border badge-estado';
+    card.classList.remove('bg-light', 'opacity-75');
+    titulo.classList.remove('text-decoration-line-through', 'text-muted');
+    if (descripcion) descripcion.classList.remove('text-decoration-line-through', 'text-muted');
+  }
+
+}
+
+// Función para actualizar los datos dentro de la modal de detalle
+function cargarDetalleModal(colElemento) {
+  const badgeEstado = colElemento.querySelector('.badge-estado');
+  const badgePrioridad = colElemento.querySelector('.badge-prioridad') || colElemento.querySelectorAll('.badge')[1];
+  const titulo = colElemento.querySelector('h2');
+  const descripcion = colElemento.querySelector('p.card-text');
+  const fecha = colElemento.querySelector('span.small.text-muted');
+
+  const detalleEstado = document.querySelector('#detalleEstado');
+  const detallePrioridad = document.querySelector('#detallePrioridad');
+  const detalleTitulo = document.querySelector('#detalleTitulo');
+  const detalleDescripcion = document.querySelector('#detalleDescripcion');
+  const detalleFecha = document.querySelector('#detalleFecha');
+
+  if (detalleEstado && badgeEstado) {
+    detalleEstado.textContent = badgeEstado.textContent;
+    detalleEstado.className = badgeEstado.className;
+  }
+  if (detallePrioridad && badgePrioridad) {
+    detallePrioridad.textContent = badgePrioridad.textContent;
+    detallePrioridad.className = badgePrioridad.className;
+  }
+  if (detalleTitulo && titulo) detalleTitulo.textContent = titulo.textContent;
+  if (detalleDescripcion && descripcion) detalleDescripcion.textContent = descripcion.textContent;
+  if (detalleFecha && fecha) detalleFecha.textContent = fecha.textContent;
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   // Captura de elementos del DOM
@@ -82,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnCancelar = document.querySelector('#btnCancelar');
   const btnEntendido = document.querySelector('#btnEntendido');
   const inputFechaFin = document.querySelector('#fechafin');
+  const contenedorTareas = document.querySelector('#contenedorTareas');
+
 
   if (btnEntendido) {
     btnEntendido.addEventListener('click', function () {
@@ -106,6 +166,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (modalFormulario) {
     modalFormulario.addEventListener('hidden.bs.modal', limpiarModal);
+  }
+
+  // Delegación de eventos para los switches (funciona para estáticas y dinámicas)
+  if (contenedorTareas) {
+    contenedorTareas.addEventListener('change', function (event) {
+      if (event.target.classList.contains('form-check-input') || event.target.classList.contains('switch-tarea-estado')) {
+        const colElemento = event.target.closest('.col');
+        if (colElemento) {
+          actualizarEstadoTarea(colElemento, event.target.checked);
+        }
+      }
+    });
+
+    // Evento Click para abrir modal de detalles cargando los datos de la tarjeta seleccionada
+    contenedorTareas.addEventListener('click', function (event) {
+      const zonaDetalles = event.target.closest('[data-bs-target="#modalDetalleTarea"]');
+      if (zonaDetalles) {
+        const colElemento = zonaDetalles.closest('.col');
+        if (colElemento) {
+          cargarDetalleModal(colElemento);
+        }
+      }
+    });
   }
 
   // Evento submit del formulario
@@ -151,4 +234,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+
 });
+
+const taskManager = new TaskManager();
+console.log(taskManager.tasks);
