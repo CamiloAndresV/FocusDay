@@ -1,3 +1,4 @@
+const taskManager = new TaskManager();
 
  // Ocultar alerta de error y resetear formulario al cerrar o cancelar modal
 function limpiarModal() {
@@ -160,6 +161,13 @@ document.addEventListener('DOMContentLoaded', function () {
     inputFechaFin.setAttribute('min', fechaHoyString);
   }
 
+  // Quitar el foco del elemento activo al cerrar cualquier modal para evitar que quede resaltado
+  document.addEventListener('hide.bs.modal', function () {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  });
+
   if (btnCancelar) {
     btnCancelar.addEventListener('click', limpiarModal);
   }
@@ -217,15 +225,33 @@ document.addEventListener('DOMContentLoaded', function () {
         // CASO VÁLIDO: Oculta la alerta de error
         alertError.classList.add('d-none');
 
+        // Agregar la tarea al TaskManager
+        taskManager.addTask(
+          dataFormulario.titulo,
+          dataFormulario.estado,
+          dataFormulario.descripcion,
+          dataFormulario.fecha,
+          dataFormulario.prioridad
+        );
+        console.log("Tareas agregadas:", taskManager.tasks)
+        console.log("Tarea agregada:", taskManager.tasks[taskManager.tasks.length - 1])
+        
+
+
         // 1. Ocultar la modal del formulario usando la API de Bootstrap
-        const instanceModalForm = bootstrap.Modal.getInstance(modalFormulario) || new bootstrap.Modal(modalFormulario);
-        instanceModalForm.hide();
+        // const instanceModalForm = bootstrap.Modal.getInstance(modalFormulario) || new bootstrap.Modal(modalFormulario);
+        // instanceModalForm.hide();
 
         // 2. Pintar la tarea en el DOM
         pintarTarea(dataFormulario);
 
         // 3. Limpiar campos del formulario
         formNuevaTarea.reset();
+
+        // Quitar el foco del elemento activo (si es un elemento HTML) para evitar que quede resaltado después de cerrar la modal
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
 
         // 4. Mostrar la modal de éxito
         const instanceModalExito = new bootstrap.Modal(modalExito);
@@ -235,8 +261,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
 });
-
-const taskManager = new TaskManager();
-console.log(taskManager.tasks);
