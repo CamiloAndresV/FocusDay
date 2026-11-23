@@ -40,6 +40,7 @@ FocusDay/
 ├── css/
 │   └── styles.css
 ├── js/
-│   └── main.js
+│   │── main.js
+│   └── taskManager.js
 ├── index.html
 └── README.md
