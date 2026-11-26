@@ -101,7 +101,7 @@
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-danger text-white">Alta</span>
                 <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+                <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -127,7 +127,7 @@
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-warning text-white">Media</span>
                 <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+                <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -153,7 +153,7 @@
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-danger text-white">Alta</span>
                 <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+                <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -179,7 +179,7 @@
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-success text-white">Baja</span>
                 <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+                <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -205,7 +205,7 @@
               <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
                 <span class="badge bg-success text-white">Baja</span>
                 <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-                <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+                <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
               </div>
             </article>
           </div>
@@ -241,7 +241,7 @@
         <section class="widget-brand mb-3 d-flex justify-content-center align-items-center">
           <div class="border border-1 rounded d-flex text-muted fw-bold overflow-hidden" style="width: 60px; height: 60px;">
             <a class="navbar-brand" href="#inicio">
-              <img src="./img/focusb.png" alt="Logo" class="img-fluid w-100 h-100 object-fit-cover">
+              <img src="./img/focus.jpg" alt="Logo" class="img-fluid w-100 h-100 object-fit-cover">
             </a>
           </div>
         </section>
@@ -275,7 +275,7 @@
           </div>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-outline-danger" id="btnEliminarTareaModal">Eliminar</button>
+          <button type="button" class="btn btn-outline-danger delete-button" id="btnEliminarTareaModal">Eliminar</button>
           <div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           </div>
@@ -353,6 +353,22 @@
           <h5 class="fw-bold mb-2" id="modalExitoLabel">¡Tarea Guardada!</h5>
           <p class="text-muted small mb-3">Los datos se han registrado correctamente.</p>
           <button type="button" class="btn btn-success w-100 fw-bold" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content text-center p-3">
+        <div class="modal-body">
+          <h5 class="fw-bold mb-2" id="modalConfirmarEliminarLabel">¿Eliminar tarea?</h5>
+          <p class="text-muted small mb-3">Esta acción no se puede deshacer.</p>
+          <div class="d-flex gap-2 justify-content-center">
+            <button type="button" class="btn btn-outline-secondary w-50" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger w-50 fw-bold" id="btnConfirmarEliminar">Eliminar</button>
+          </div>
         </div>
       </div>
     </div>

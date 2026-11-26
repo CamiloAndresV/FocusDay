@@ -1,11 +1,12 @@
 const taskManager = new TaskManager();
+let tareaIdAEliminar = null; // Almacena temporalmente el ID de la tarea pendiente por confirmar
 
- // Ocultar alerta de error y resetear formulario al cerrar o cancelar modal
+// Ocultar alerta de error y resetear formulario al cerrar o cancelar modal
 function limpiarModal() {
   const alertError = document.querySelector('#alertError');
   const formNuevaTarea = document.querySelector('#formNuevaTarea');
-  alertError.classList.add('d-none');
-  formNuevaTarea.reset();
+  if (alertError) alertError.classList.add('d-none');
+  if (formNuevaTarea) formNuevaTarea.reset();
 }
 
 // Función para validar las entradas
@@ -20,40 +21,36 @@ function validFormFieldInput(data) {
   ) {
     return false;
   }
-  // Validación de fecha no pasada (comparación contra el inicio del día de hoy)
+
   const fechaSeleccionada = new Date(`${fecha}T00:00:00`);
   const inicioHoy = new Date();
   inicioHoy.setHours(0, 0, 0, 0);
   if (fechaSeleccionada < inicioHoy) {
-    return false; // Es una fecha pasada
+    return false;
   }
   return true;
 }
 
 function pintarTarea(data) {
-  const { titulo, estado, descripcion, fecha, prioridad } = data;
+  const { id, titulo, estado, descripcion, fecha, prioridad } = data;
   const contenedorTareas = document.querySelector('#contenedorTareas');
-  if (!contenedorTareas) {
-    return; // Si no se encuentra el contenedor, salir de la función
-  }
+  if (!contenedorTareas) return;
 
-  // Formatear texto a minúsculas para comparaciones seguras de clases CSS
   const estadoLower = estado.toLowerCase();
   const prioridadLower = prioridad.toLowerCase();
-  const esCompletada = estadoLower === 'completada'
+  const esCompletada = estadoLower === 'completada';
 
-  // Mapeo de colores según estado y prioridad
   const bgEstado = esCompletada ? 'success' : (estadoLower === 'en-proceso' || estadoLower === 'en proceso') ? 'primary' : 'danger';
   const bgPrioridad = prioridadLower === 'alta' ? 'danger' : prioridadLower === 'media' ? 'warning' : 'success';
 
-  // Capitalizar texto para mostrarlo bonito en la tarjeta
   const estadoTexto = estado.charAt(0).toUpperCase() + estado.slice(1);
   const prioridadTexto = prioridad.charAt(0).toUpperCase() + prioridad.slice(1);
 
-  // Lógica para pintar la tarea en el DOM
   const tarea = document.createElement('div');
   tarea.className = 'col';
-  // Aquí se puede agregar el contenido de la tarea al elemento creado
+  tarea.dataset.taskId = id;
+
+  // Sin stopPropagation() en delete-button para que funcione la delegación de eventos
   tarea.innerHTML = `
   <article class="card h-100 p-3 border-2 border-dark task-card">
     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -71,29 +68,32 @@ function pintarTarea(data) {
     <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
       <span class="badge bg-${bgPrioridad} text-white">${prioridadTexto}</span>
       <button type="button" class="btn text-danger p-0 border-0" title="Editar tarea" onclick="event.stopPropagation();">Editar</button>
-      <button type="button" class="btn text-danger p-0 border-0" title="Eliminar tarea" onclick="event.stopPropagation();">Eliminar</button>
+      <button type="button" class="btn text-danger p-0 border-0 delete-button" title="Eliminar tarea">Eliminar</button>
     </div>
   </article>
-  `
+  `;
+
+  if (esCompletada) {
+    actualizarEstadoTarea(tarea, true);
+  }
 
   contenedorTareas.appendChild(tarea);
 }
 
-// función toggle para alternar entre pediente / completada
+// Función toggle para alternar entre Pendiente / Completada
 function actualizarEstadoTarea(colElemento, estaCompletada) {
-  const card = colElemento.querySelector('.card')
-  const badgeEstado = colElemento.querySelector('.badge-estado')
-  const titulo = colElemento.querySelector('h2')
-  const descripcion = colElemento.querySelector('p.card-text')
+  const card = colElemento.querySelector('.card');
+  const badgeEstado = colElemento.querySelector('.badge-estado');
+  const titulo = colElemento.querySelector('h2');
+  const descripcion = colElemento.querySelector('p.card-text');
 
   if (!card || !badgeEstado || !titulo) return;
 
   if (estaCompletada) {
-    // Cambiar a completada
     badgeEstado.textContent = 'Completada';
     badgeEstado.className = 'badge bg-success text-white border badge-estado';
-    card.classList.add('bg-light', 'opacity-75'); // Fondo opaco[cite: 31]
-    titulo.classList.add('text-decoration-line-through', 'text-muted'); // Tachado visual[cite: 31]
+    card.classList.add('bg-light', 'opacity-75');
+    titulo.classList.add('text-decoration-line-through', 'text-muted');
     if (descripcion) descripcion.classList.add('text-decoration-line-through', 'text-muted');
   } else {
     badgeEstado.textContent = 'Pendiente';
@@ -102,11 +102,11 @@ function actualizarEstadoTarea(colElemento, estaCompletada) {
     titulo.classList.remove('text-decoration-line-through', 'text-muted');
     if (descripcion) descripcion.classList.remove('text-decoration-line-through', 'text-muted');
   }
-
 }
 
 // Función para actualizar los datos dentro de la modal de detalle
 function cargarDetalleModal(colElemento) {
+  const modalDetalleTarea = document.querySelector('#modalDetalleTarea');
   const badgeEstado = colElemento.querySelector('.badge-estado');
   const badgePrioridad = colElemento.querySelector('.badge-prioridad') || colElemento.querySelectorAll('.badge')[1];
   const titulo = colElemento.querySelector('h2');
@@ -118,6 +118,11 @@ function cargarDetalleModal(colElemento) {
   const detalleTitulo = document.querySelector('#detalleTitulo');
   const detalleDescripcion = document.querySelector('#detalleDescripcion');
   const detalleFecha = document.querySelector('#detalleFecha');
+
+  // Guardamos el ID de la tarea abierta en la modal de detalle
+  if (modalDetalleTarea && colElemento.dataset.taskId) {
+    modalDetalleTarea.dataset.taskId = colElemento.dataset.taskId;
+  }
 
   if (detalleEstado && badgeEstado) {
     detalleEstado.textContent = badgeEstado.textContent;
@@ -133,16 +138,37 @@ function cargarDetalleModal(colElemento) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Captura de elementos del DOM
   const formNuevaTarea = document.querySelector('#formNuevaTarea');
   const alertError = document.querySelector('#alertError');
   const modalFormulario = document.querySelector('#modalFormularioTarea');
+  const modalDetalleTarea = document.querySelector('#modalDetalleTarea');
   const modalExito = document.querySelector('#modalExito');
+  const modalConfirmarEliminar = document.querySelector('#modalConfirmarEliminar');
+  const btnConfirmarEliminar = document.querySelector('#btnConfirmarEliminar');
+  const btnEliminarTareaModal = document.querySelector('#btnEliminarTareaModal');
   const btnCancelar = document.querySelector('#btnCancelar');
   const btnEntendido = document.querySelector('#btnEntendido');
   const inputFechaFin = document.querySelector('#fechafin');
   const contenedorTareas = document.querySelector('#contenedorTareas');
 
+  // Cargar tareas o migrar las iniciales del HTML la primera vez
+  taskManager.load();
+
+  if (!localStorage.getItem('tasks') && contenedorTareas) {
+    const tarjetasIniciales = contenedorTareas.querySelectorAll('.col');
+    tarjetasIniciales.forEach(col => {
+      const titulo = col.querySelector('h2')?.textContent.trim() || '';
+      const estado = col.querySelector('.badge-estado-click, .badge-estado')?.textContent.trim() || 'Pendiente';
+      const descripcion = col.querySelector('p.card-text')?.textContent.trim() || '';
+      const fecha = col.querySelector('span.small.text-muted')?.textContent.trim() || '';
+      const prioridad = col.querySelectorAll('.badge')[1]?.textContent.trim() || 'Media';
+
+      taskManager.addTask(titulo, estado, descripcion, fecha, prioridad);
+    });
+    taskManager.save();
+  }
+
+  taskManager.render();
 
   if (btnEntendido) {
     btnEntendido.addEventListener('click', function () {
@@ -150,18 +176,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-//   Establecer la fecha mínima del campo de fecha al día actual
+  // Fecha mínima de hoy en el formulario
   const hoy = new Date();
   const yyyy = hoy.getFullYear();
   const mm = String(hoy.getMonth() + 1).padStart(2, '0');
   const dd = String(hoy.getDate()).padStart(2, '0');
-  const fechaHoyString = `${yyyy}-${mm}-${dd}`; // Formato YYYY-MM-DD
+  const fechaHoyString = `${yyyy}-${mm}-${dd}`;
 
   if (inputFechaFin) {
     inputFechaFin.setAttribute('min', fechaHoyString);
   }
 
-  // Quitar el foco del elemento activo al cerrar cualquier modal para evitar que quede resaltado
   document.addEventListener('hide.bs.modal', function () {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
@@ -176,19 +201,73 @@ document.addEventListener('DOMContentLoaded', function () {
     modalFormulario.addEventListener('hidden.bs.modal', limpiarModal);
   }
 
-  // Delegación de eventos para los switches (funciona para estáticas y dinámicas)
+  // Función auxiliar para abrir la modal de confirmación
+  function solicitarConfirmacionEliminar(taskId) {
+    tareaIdAEliminar = taskId;
+    if (modalConfirmarEliminar) {
+      const instanceConfirmar = bootstrap.Modal.getInstance(modalConfirmarEliminar) || new bootstrap.Modal(modalConfirmarEliminar);
+      instanceConfirmar.show();
+    }
+  }
+
+  // Botón Eliminar dentro de la Modal de Detalle
+  if (btnEliminarTareaModal && modalDetalleTarea) {
+    btnEliminarTareaModal.addEventListener('click', function () {
+      const taskId = Number(modalDetalleTarea.dataset.taskId);
+      if (taskId) {
+        // Cerramos la modal de detalle y abrimos la de confirmación
+        const instanceDetalle = bootstrap.Modal.getInstance(modalDetalleTarea);
+        if (instanceDetalle) instanceDetalle.hide();
+        solicitarConfirmacionEliminar(taskId);
+      }
+    });
+  }
+
+  // Botón Confirmar dentro de la Modal de Confirmación
+  if (btnConfirmarEliminar) {
+    btnConfirmarEliminar.addEventListener('click', function () {
+      if (tareaIdAEliminar !== null) {
+        taskManager.deleteTask(tareaIdAEliminar);
+        taskManager.save();
+        taskManager.render();
+        tareaIdAEliminar = null;
+      }
+      const instanceConfirmar = bootstrap.Modal.getInstance(modalConfirmarEliminar);
+      if (instanceConfirmar) instanceConfirmar.hide();
+    });
+  }
+
+  // Delegación de eventos en #contenedorTareas
   if (contenedorTareas) {
     contenedorTareas.addEventListener('change', function (event) {
       if (event.target.classList.contains('form-check-input') || event.target.classList.contains('switch-tarea-estado')) {
         const colElemento = event.target.closest('.col');
         if (colElemento) {
           actualizarEstadoTarea(colElemento, event.target.checked);
+
+          if (colElemento.dataset.taskId) {
+            const taskId = Number(colElemento.dataset.taskId);
+            const tareaObj = taskManager.tasks.find(t => t.id === taskId);
+            if (tareaObj) {
+              tareaObj.estado = event.target.checked ? 'Completada' : 'Pendiente';
+              taskManager.save();
+            }
+          }
         }
       }
     });
 
-    // Evento Click para abrir modal de detalles cargando los datos de la tarjeta seleccionada
     contenedorTareas.addEventListener('click', function (event) {
+      // Clic en botón Eliminar de la tarjeta
+      if (event.target.classList.contains('delete-button')) {
+        const pTask = event.target.closest('.col');
+        if (pTask && pTask.dataset.taskId) {
+          solicitarConfirmacionEliminar(Number(pTask.dataset.taskId));
+        }
+        return;
+      }
+
+      // Clic para abrir modal de detalles
       const zonaDetalles = event.target.closest('[data-bs-target="#modalDetalleTarea"]');
       if (zonaDetalles) {
         const colElemento = zonaDetalles.closest('.col');
@@ -202,9 +281,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Evento submit del formulario
   if (formNuevaTarea) {
     formNuevaTarea.addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevenir recarga de página
+      event.preventDefault();
 
-      // Extracción de datos
       const dataFormulario = {
         titulo: document.querySelector('#tituloTarea').value,
         estado: document.querySelector('#estadoTarea').value,
@@ -213,19 +291,13 @@ document.addEventListener('DOMContentLoaded', function () {
         prioridad: document.querySelector('#prioridad').value
       };
 
-      console.log("Comprobando datos:", dataFormulario);
-
-      // Evaluación con la función obligatoria
       const esValido = validFormFieldInput(dataFormulario);
 
       if (!esValido) {
-        // CASO INVÁLIDO: Muestra la alerta roja de error
-        alertError.classList.remove('d-none');
+        if (alertError) alertError.classList.remove('d-none');
       } else {
-        // CASO VÁLIDO: Oculta la alerta de error
-        alertError.classList.add('d-none');
+        if (alertError) alertError.classList.add('d-none');
 
-        // Agregar la tarea al TaskManager
         taskManager.addTask(
           dataFormulario.titulo,
           dataFormulario.estado,
@@ -233,32 +305,18 @@ document.addEventListener('DOMContentLoaded', function () {
           dataFormulario.fecha,
           dataFormulario.prioridad
         );
-        console.log("Tareas agregadas:", taskManager.tasks)
-        console.log("Tarea agregada:", taskManager.tasks[taskManager.tasks.length - 1])
-        
 
-
-        // 1. Ocultar la modal del formulario usando la API de Bootstrap
-        // const instanceModalForm = bootstrap.Modal.getInstance(modalFormulario) || new bootstrap.Modal(modalFormulario);
-        // instanceModalForm.hide();
-
-        // 2. Pintar la tarea en el DOM
-        pintarTarea(dataFormulario);
-
-        // 3. Limpiar campos del formulario
+        taskManager.save();
+        taskManager.render();
         formNuevaTarea.reset();
 
-        // Quitar el foco del elemento activo (si es un elemento HTML) para evitar que quede resaltado después de cerrar la modal
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
         }
 
-        // 4. Mostrar la modal de éxito
         const instanceModalExito = new bootstrap.Modal(modalExito);
         instanceModalExito.show();
-        
       }
     });
   }
-
 });

@@ -1,3 +1,14 @@
+:root {
+  --bg-estudio: #362e28;       /* Fondo principal madera/cuero muy oscuro */
+  --bg-superficie: #231c18;    /* Fondo de tarjetas, header y modales */
+  --bg-elevado: #2d241f;       /* Hover y elementos secundarios */
+  --cuero-primario: #e7cdc3;   /* Tu tono cuero cálido */
+  --carmesi-acento: #8E2C2D;   /* Tu tono borgoña / cinta marcadora */
+  --texto-pergamino: #ede3d6;  /* Texto principal crema suave (no cansa la vista) */
+  --texto-tenue: #b5a695;      /* Subtítulos y descripciones */
+  --borde-sutil: #46372e;      /* Bordes cálidos */
+}
+
 /* Reseteo Global */
 * {
   margin: 0;
@@ -11,16 +22,95 @@ img {
   height: auto;
 }
 
+/* Base Oscura Cálida */
+body {
+  background-color: var(--bg-estudio);
+  color: var(--texto-pergamino);
+}
+
+header,
+aside,
+footer.bg-light {
+  background-color: var(--bg-superficie) !important;
+  color: var(--texto-pergamino);
+}
+
+/* Adaptación de bordes oscuros de Bootstrap */
+.border-dark {
+  border-color: var(--borde-sutil) !important;
+}
+
+.text-muted {
+  color: var(--texto-tenue) !important;
+}
+
+/* Botones principales y filtros */
+.btn-dark {
+  background-color: var(--carmesi-acento);
+  border-color: var(--cuero-primario);
+  color: var(--texto-pergamino);
+}
+
+.btn-dark:hover,
+.btn-dark:focus {
+  background-color: var(--cuero-primario);
+  border-color: var(--carmesi-acento);
+  color: #fff;
+}
+
+.btn-outline-dark {
+  color: var(--texto-pergamino);
+  border-color: var(--cuero-primario);
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--cuero-primario);
+  border-color: var(--cuero-primario);
+  color: #fff;
+}
+
+/* Inputs, Selects y Textareas */
+.form-control,
+.form-select {
+  background-color: var(--bg-superficie);
+  border-color: var(--borde-sutil);
+  color: var(--texto-pergamino);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--bg-elevado);
+  border-color: var(--cuero-primario);
+  color: var(--texto-pergamino);
+  box-shadow: 0 0 0 0.2rem rgba(152, 80, 52, 0.35);
+}
+
+.form-control::placeholder {
+  color: var(--texto-tenue);
+}
+
+
+
 /* Tarjetas de Tarea */
 .task-card {
   min-height: 210px; /* Asegura la apariencia rectangular alargada en escritorio */
+  background-color: var(--bg-superficie);
+  color: var(--texto-pergamino);
+  border-color: var(--cuero-primario) !important;
   cursor: pointer;
   transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .task-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--bg-elevado);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Mantiene el efecto visual cuando JS marca la tarjeta como completada (.bg-light) */
+.task-card.bg-light {
+  background-color: #14100d !important;
+  border-color: var(--borde-sutil) !important;
 }
 
 /* Truncado de Título a 1 línea */
@@ -36,6 +126,49 @@ img {
 .text-truncate-description {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 3.6rem;
+}
+
+/* Badges Interactivos */
+.badge-estado-click {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Modales */
+.modal-content {
+  background-color: var(--bg-superficie);
+  color: var(--texto-pergamino);
+  border: 1px solid var(--cuero-primario);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--borde-sutil);
+}
+
+.modal-header .btn-close {
+  filter: invert(1) sepia(0.2);
+}
+
+/* Truncado de Título a 1 línea */
+.text-truncate-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Truncado de Descripción a 3 líneas */
+.text-truncate-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

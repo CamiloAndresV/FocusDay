@@ -19,4 +19,46 @@ class TaskManager {
         }
         this.tasks.push(task);
     }
+
+    deleteTask(taskId) {
+        const newTasks = []
+
+        for (let task of this.tasks) {
+            if (task.id !== taskId) {
+                newTasks.push(task)
+            }
+        }
+        this.tasks = newTasks
+    }
+
+    save() {
+        localStorage.setItem("tasks", JSON.stringify(this.tasks))
+        localStorage.setItem("currentId", String(this.currentId))
+    }
+
+    load() {
+        const savedTasks = localStorage.getItem("tasks")
+        const savedId = localStorage.getItem("currentId")
+
+        if (savedTasks) {
+            this.tasks = JSON.parse(savedTasks)
+        }
+        if (savedId) {
+            this.currentId = Number(savedId)
+        }
+
+    }
+
+    render() {
+        const contenedorTareas = document.querySelector('#contenedorTareas')
+
+        if (!contenedorTareas) {
+            return
+        }
+
+        contenedorTareas.innerHTML = ''
+        for(let task of this.tasks) {
+            pintarTarea(task)
+        }
+    }
 }
