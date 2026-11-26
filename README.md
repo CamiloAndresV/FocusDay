@@ -10,6 +10,7 @@
 
 - 🎨 **Diseño en Figma (Wireframe/UI):** [Enlace a Figma](https://www.figma.com/design/SMhGEdHogP0LFuVkP7YYxf/Planificador-de-tareas--FocusDay-?node-id=0-1&t=S3rqJyC58r77ulxV-1)
 - 📋 **Tablero de Trello (Gestión del Proyecto):** [Enlace a Trello](https://trello.com/invite/b/6ae251709709599fa65984e4/ATTIf5f027039bae4779582040d0e28f6829C3DE69C8/planificador-de-tareas)
+- 🚀 **Enlace de deploy (Despliegue del proyecto):** [Enlace a la web](https://camiloandresv.github.io/FocusDay/)
 
 ---
 
